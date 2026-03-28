@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Tournament - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script type="text/javascript">
+        (function(d, t) {
+            var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+            g.src = "https://cdn.pushalert.co/unified_c5ecf5c035cb762ada1974bf1ae9592c.js";
+            
+            // সাব-ফোল্ডারের জন্য এই ২ লাইন অত্যন্ত জরুরি
+            g.setAttribute("data-pa-sw-path", "/ff/pa_sw.js");
+            g.setAttribute("data-pa-sw-scope", "/ff/");
+            
+            s.parentNode.insertBefore(g, s);
+        }(document, "script"));
+    </script>
+    <style>
+        .category-tab::-webkit-scrollbar { display: none; }
+        .category-tab { -ms-overflow-style: none; scrollbar-width: none; }
+        .active-tab { background-color: #ea580c !important; color: white !important; border-color: #ea580c !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white pb-20 overflow-y-auto">
+
+    <div id="updateModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-[999] p-6">
+        <div class="bg-gray-800 border border-orange-500/30 p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl">
+            <div class="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-orange-500/40">
+                <i class="fas fa-cloud-download-alt text-4xl text-orange-500"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white italic uppercase">New Update!</h2>
+            <p class="text-gray-400 text-sm mt-2 mb-8">অ্যাপের নতুন ভার্সন এসেছে। নিরবচ্ছিন্ন সার্ভিসের জন্য এখনই আপডেট করে নিন।</p>
+            <a id="updateBtnLink" href="#" class="block w-full bg-orange-600 hover:bg-orange-700 text-white py-4 rounded-2xl font-black shadow-lg transition active:scale-95 uppercase">Update Now</a>
+        </div>
+    </div>
+
+    <nav class="p-4 bg-gray-800 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <h1 class="text-xl font-black text-orange-500 italic">FREE FIRE Arena</h1>
+        <div class="flex items-center space-x-3">
+            <button onclick="window.location.href='support.html'" class="bg-gray-700 w-9 h-9 rounded-full flex items-center justify-center text-orange-500 hover:bg-gray-600 transition">
+                <i class="fas fa-headset text-lg"></i>
+            </button>
+            <div class="bg-gray-700 px-3 py-1 rounded-full flex items-center h-9">
+                <i class="fas fa-wallet text-yellow-500 mr-2 text-sm"></i>
+                <span id="userBalance" class="font-bold text-sm">৳ ০</span>
+            </div>
+            <i class="fas fa-user-circle text-3xl text-gray-400 cursor-pointer" onclick="window.location.href='profile.html'"></i>
+        </div>
+    </nav>
+
+    <div class="p-4 overflow-x-auto flex space-x-3 category-tab no-scrollbar">
+        <button onclick="changeCategory('All', this)" class="tab-btn active-tab flex-shrink-0 px-5 py-2 rounded-full bg-gray-800 border border-gray-700 text-sm font-bold transition">All</button>
+        <button onclick="changeCategory('Br Match', this)" class="tab-btn flex-shrink-0 px-5 py-2 rounded-full bg-gray-800 border border-gray-700 text-sm font-bold transition">Br Match</button>
+        <button onclick="changeCategory('Cs Match', this)" class="tab-btn flex-shrink-0 px-5 py-2 rounded-full bg-gray-800 border border-gray-700 text-sm font-bold transition">Cs Match</button>
+        <button onclick="changeCategory('Lon wolf', this)" class="tab-btn flex-shrink-0 px-5 py-2 rounded-full bg-gray-800 border border-gray-700 text-sm font-bold transition">Lon wolf</button>
+        <button onclick="changeCategory('Giveaways', this)" class="tab-btn flex-shrink-0 px-5 py-2 rounded-full bg-gray-800 border border-gray-700 text-sm font-bold transition">Giveaways</button>
+    </div>
+
+    <div class="px-4">
+        <div class="bg-gradient-to-r from-orange-600 to-red-600 p-6 rounded-2xl shadow-lg mb-6">
+            <h2 class="text-xl font-bold">আজকের স্পেশাল টুর্নামেন্ট!</h2>
+            <p class="text-sm opacity-90">জয়েন করুন এবং জিতে নিন আকর্ষণীয় পুরস্কার।</p>
+        </div>
+        <h3 id="displayCategory" class="text-lg font-bold mb-4 flex items-center">
+            <i class="fas fa-gamepad text-orange-500 mr-2"></i> সব ম্যাচ
+        </h3>
+        <div id="tournamentContainer" class="space-y-4">
+            <p class="text-center text-gray-500 italic">ম্যাচ লোড হচ্ছে...</p>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 w-full bg-gray-800 p-3 flex justify-around border-t border-gray-700 z-50">
+        <button onclick="location.reload()" class="text-orange-500 text-center">
+            <i class="fas fa-home text-xl"></i><br><span class="text-xs">Home</span>
+        </button>
+        <button onclick="window.location.href='wallet.html'" class="text-gray-400 text-center">
+            <i class="fas fa-coins text-xl"></i><br><span class="text-xs">Wallet</span>
+        </button>
+        <button onclick="window.location.href='history.html'" class="text-gray-400 text-center">
+            <i class="fas fa-trophy text-xl"></i><br><span class="text-xs">Result</span>
+        </button>
+    </div>
+
+    <script>
+        let startY = 0;
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].pageY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            const currentY = e.touches[0].pageY;
+            const diff = currentY - startY;
+            if (window.scrollY === 0 && diff > 150) {
+                location.reload();
+            }
+        }, { passive: true });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDB15lIz0BwUaErArj-ooETB79iPCZK3D4",
+            authDomain: "bot-864b3.firebaseapp.com",
+            projectId: "bot-864b3",
+            storageBucket: "bot-864b3.firebasestorage.app",
+            messagingSenderId: "82198701869",
+            appId: "1:82198701869:web:3c099992e1c64e285355a4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const currentVersion = "1.0"; 
+
+        async function checkUpdate() {
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "appUpdate"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.version && data.version !== currentVersion) {
+                        const modal = document.getElementById('updateModal');
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        document.getElementById('updateBtnLink').href = data.url;
+                    }
+                }
+            } catch (error) { console.error("Update check failed:", error); }
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    document.getElementById('userBalance').innerText = "৳ " + userDoc.data().wallet;
+                }
+                checkUpdate(); 
+                loadTournaments('All');
+            } else { window.location.href = "auth.html"; }
+        });
+
+        window.changeCategory = (category, btn) => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+            btn.classList.add('active-tab');
+            document.getElementById('displayCategory').innerHTML = `<i class="fas fa-gamepad text-orange-500 mr-2"></i> ${category === 'All' ? 'সব ম্যাচ' : category}`;
+            loadTournaments(category);
+        }
+
+        async function loadTournaments(category = 'All') {
+            const container = document.getElementById('tournamentContainer');
+            container.innerHTML = `<p class="text-center text-gray-500 py-10 italic animate-pulse">খোঁজা হচ্ছে...</p>`;
+            let q = category === 'All' ? collection(db, "tournaments") : query(collection(db, "tournaments"), where("category", "==", category));
+            const querySnapshot = await getDocs(q);
+            container.innerHTML = ""; 
+            if (querySnapshot.empty) {
+                container.innerHTML = `<div class="text-center py-10"><p class="text-gray-500 text-sm italic">ম্যাচ পাওয়া যায়নি!</p></div>`;
+                return;
+            }
+            querySnapshot.forEach((docSnap) => {
+                const match = docSnap.data();
+                container.innerHTML += `
+                    <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-sm transition transform active:scale-[0.98]">
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-bold">${match.title}</h4>
+                                <span class="bg-orange-600 text-[10px] px-2 py-1 rounded uppercase font-bold">${match.mode}</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-400 mb-4">
+                                <span><i class="far fa-clock mr-1 text-orange-500"></i> ${match.time}</span>
+                                <span><i class="fas fa-users mr-1 text-orange-500"></i> স্লট: ${match.slots || match.totalSlots}</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-gray-900 p-3 rounded-lg border border-gray-700/50">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-gray-500 uppercase">প্রাইজ পুল</p>
+                                    <p class="font-bold text-orange-400">৳ ${match.prize}</p>
+                                </div>
+                                <div class="text-center border-x border-gray-700 px-4">
+                                    <p class="text-[10px] text-gray-500 uppercase">এন্ট্রি ফি</p>
+                                    <p class="font-bold text-white">৳ ${match.fee}</p>
+                                </div>
+                                <button onclick="window.location.href='match-details.html?id=${docSnap.id}'" 
+                                    class="bg-orange-600 hover:bg-orange-700 px-5 py-2 rounded-lg text-sm font-bold shadow-md transition">JOIN</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+    </script>
+</body>
+  </html>
